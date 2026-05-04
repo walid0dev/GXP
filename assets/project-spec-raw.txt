@@ -1,0 +1,146 @@
+Project context
+
+GameExplorer est une application web permettant aux utilisateurs de découvrir des jeux vidéo à partir d’une API externe.
+
+Dans un contexte où les utilisateurs consomment de plus en plus de contenu interactif, il est essentiel de pouvoir explorer facilement un catalogue riche, filtrer les résultats et accéder à des informations détaillées.
+
+L’objectif de ce projet est de développer une application React (SPA) permettant :
+
+    de consommer une API externe (RAWG)
+    de naviguer entre plusieurs pages (routing)
+    d’afficher dynamiquement des données
+    de gérer les états asynchrones (chargement, erreurs)
+
+Fonctionnalités
+
+1 - Landing Page (/)
+
+Afficher une page d’accueil contenant :
+
+    Une section Hero (titre + bouton “Browse Games” → /games)
+    Une section Trending Games (6 jeux récupérés via API) (image, nom, note)
+
+Interaction : (clic sur un jeu → /games/{game_id})
+
+2 - Liste des jeux ("/games")
+
+Afficher les jeux sous forme de cartes avec :
+
+    image
+    nom
+    note
+    date de sortie
+    Fonctionnalités :
+
+Pagination :
+
+    navigation entre les pages (page=1,2...)
+
+Recherche :
+
+    recherche par nom de jeu
+
+Filtres :
+
+    par genre
+    par tags (optionnel)
+
+Interaction :
+
+    clic sur un jeu → /games/{game_id}
+
+3 - Détail d’un jeu (/games/{game_id})
+
+Afficher les informations complètes d’un jeu :
+
+    nom
+    image
+    description
+    note
+    date de sortie
+    genres
+    plateformes
+
+Interaction :
+
+    bouton “View Developers” → /games/{game_id}/developers-team
+
+4 - Équipe de développement (/games/{game_id}/developers-team)
+
+Afficher les créateurs du jeu :
+
+    nom
+    rôle (developer, designer…)
+
+Données :
+
+    récupérées via API (endpoint dédié)
+
+5 - Liste des créateurs (/creators)
+
+Afficher une liste de créateurs :
+
+    nom
+    image (si disponible)
+
+Interaction :
+
+    clic sur un créateur → /creators/{creator_id}
+
+6 - Profil d’un créateur (/creators/{creator_id})
+
+Afficher les informations d’un créateur :
+
+    nom
+    description
+    jeux associés (si disponibles)
+
+7 - Organisation de l’interface
+
+Navbar :
+
+    Home → /
+    Games → /games
+    Creators → /creators
+
+Pages principales :
+
+    Landing page
+    Liste des jeux
+    Détail jeu
+    Équipe de développement
+    Liste créateurs
+    Détail créateur
+
+8 - Gestion des états asynchrones
+
+Pour chaque appel API :
+
+    afficher un loading state
+    gérer les erreurs
+    gérer les cas de résultat vide
+
+Learning methods
+
+Travail collectif.
+
+    Durée : 5 jours.
+    Date de lancement du brief : 04/05/2026 à 11h30.
+    Date limite de soumission des livrables : 08/05/2026 avant 23h59. Tout livrable soumis après la date mentionnée NE SERA PAS ACCEPTE.
+    Dernière push sur GitHub le dimanche avant 23h59.
+
+Assessment methods
+5 minutes – présentation
+5 minutes – démonstration
+15 minutes – Question et mise en situation
+Deliverables
+- lien planification Trello
+- lien présentation
+- lien GitHub
+- lien design Figma
+Performance criteria
+- Capacité à consommer une API externe correctement
+- Compréhension du routing (navigation entre pages)
+- Gestion des effets avec useEffect
+- Affichage dynamique des (map, conditions)
+- Structuration claire de l’application
