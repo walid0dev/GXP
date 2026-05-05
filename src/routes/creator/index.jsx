@@ -4,7 +4,7 @@
 
 // import api from "../services/apiCreators"
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 import api from "../../../services/apiCreators";
 // export default index;
@@ -12,14 +12,22 @@ function Creators(){
 const [creators,setCreators]=useState([])
 const [loading,setLoading]=useState(true)
 const [error,setError]=useState("")
+const[page,setPage]=useState(1)
+const [total, setTotal] = useState(0);
+const totalPages = Math.ceil(total / 6);
 
 useEffect(()=>{
 const fetchCreators=async()=>{
   try{
     setLoading(true);
-    const res=await api.get("/creators")
+    const res=await api.get("/creators",{
+      params:{
+        page:page,
+        page_size:6,
+      }
+    })
     setCreators(res.data.results)
-
+    setTotal(res.data.count)
   }
   
   catch(err){
@@ -33,7 +41,7 @@ const fetchCreators=async()=>{
 
  fetchCreators()
 
-},[])
+},[page])
 if(loading) return <p>...Loading</p>
 if(error) return <p>{error}</p>
   return(
@@ -102,17 +110,38 @@ if(error) return <p>{error}</p>
 
   {/* Pagination */}
   <div className="flex justify-center items-center gap-4 mt-10">
-    <button className="bg-[#0f172a] px-3 py-2 rounded-lg hover:bg-[#1e293b]">
-      ◀
-    </button>
 
-    <span className="text-gray-400">Page 1</span>
+  {/* Previous */}
+  <button
+    onClick={() => setPage(page - 1)}
+    disabled={page === 1}
+    className={`px-4 py-2 rounded-lg ${
+      page === 1
+        ? "bg-gray-700 cursor-not-allowed"
+        : "bg-[#0f172a] hover:bg-[#1e293b]"
+    }`}
+  >
+    ◀
+  </button>
 
-    <button className="bg-[#0f172a] px-3 py-2 rounded-lg hover:bg-[#1e293b]">
-      ▶
-    </button>
-  </div>
+  <span className="text-gray-400">
+    Page {page} 
+  </span>
 
+  {/* Next */}
+  <button
+    onClick={() => setPage(page + 1)}
+    disabled={page === totalPages}
+    className={`px-4 py-2 rounded-lg ${
+      page === totalPages
+        ? "bg-gray-700 cursor-not-allowed"
+        : "bg-[#0f172a] hover:bg-[#1e293b]"
+    }`}
+  >
+    ▶
+  </button>
+
+</div>
 </div>
   )
 }
