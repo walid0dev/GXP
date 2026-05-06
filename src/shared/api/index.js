@@ -2,7 +2,7 @@ import axios from "axios";
 
 const DEFAULT_BASE_URL = "https://api.rawg.io/api";
 const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 20;
+const DEFAULT_PAGE_SIZE = 12;
 
 /**
  * @typedef {Object} PaginationOptions
@@ -44,13 +44,6 @@ const DEFAULT_PAGE_SIZE = 20;
  */
 
 /**
- * @typedef {Object} RawgApiConfig
- * @property {string} [apiKey]
- * @property {string} [baseURL]
- * @property {import("axios").AxiosInstance} [axiosInstance]
- */
-
-/**
  * @returns {string | undefined}
  */
 function getEnvApiKey() {
@@ -62,11 +55,10 @@ function getEnvApiKey() {
 }
 
 /**
- * @param {string | undefined} configuredApiKey
  * @returns {string}
  */
-function resolveApiKey(configuredApiKey) {
-  const apiKey = configuredApiKey || getEnvApiKey();
+function resolveApiKey() {
+  const apiKey = getEnvApiKey();
 
   if (!apiKey) {
     throw new Error("RAWG_API_KEY is missing. Set it in your environment.");
@@ -85,12 +77,11 @@ function assertId(id) {
 }
 
 /**
- * @param {import("axios").AxiosInstance} client
  * @param {string} path
- * @param {string} apiKey
  * @param {Record<string, unknown>} [params]
  */
-async function request(client, path, apiKey, params = {}) {
+async function request(path, params = {}) {
+  console.info("fetching data", path, params);
   const response = await client.get(path, {
     params: {
       key: apiKey,
@@ -101,80 +92,72 @@ async function request(client, path, apiKey, params = {}) {
   return response.data;
 }
 
+const client = axios.create({ baseURL: DEFAULT_BASE_URL });
+const apiKey = resolveApiKey();
+
 /**
- * @param {RawgApiConfig} [config]
+ * @param {PaginationOptions & QueryFilters} [options]
+ * @returns {Promise<RawgListResponse<RawgGame>>}
  */
-export function createRawgApi(config = {}) {
-  const baseURL = config.baseURL || DEFAULT_BASE_URL;
-  const client = config.axiosInstance || axios.create({ baseURL });
-  const getApiKey = () => resolveApiKey(config.apiKey);
+export function getGames(options = {}) {
+  const {
+    page = DEFAULT_PAGE,
+    pageSize = DEFAULT_PAGE_SIZE,
+    ...filters
+  } = options;
 
-  return {
-    /**
-     * @param {PaginationOptions & QueryFilters} [options]
-     * @returns {Promise<RawgListResponse<RawgGame>>}
-     */
-    getGames(options = {}) {
-      const {
-        page = DEFAULT_PAGE,
-        pageSize = DEFAULT_PAGE_SIZE,
-        ...filters
-      } = options;
-
-      return request(client, "/games", getApiKey(), {
-        page,
-        page_size: pageSize,
-        ...filters,
-      });
-    },
-
-    /**
-     * @param {number} id
-     * @param {QueryFilters} [options]
-     * @returns {Promise<RawgGame>}
-     */
-    getGameById(id, options = {}) {
-      assertId(id);
-
-      return request(client, `/games/${id}`, getApiKey(), options);
-    },
-
-    /**
-     * @param {PaginationOptions & QueryFilters} [options]
-     * @returns {Promise<RawgListResponse<RawgCreator>>}
-     */
-    getCreators(options = {}) {
-      const {
-        page = DEFAULT_PAGE,
-        pageSize = DEFAULT_PAGE_SIZE,
-        ...filters
-      } = options;
-
-      return request(client, "/creators", getApiKey(), {
-        page,
-        page_size: pageSize,
-        ...filters,
-      });
-    },
-
-    /**
-     * @param {number} id
-     * @param {QueryFilters} [options]
-     * @returns {Promise<RawgCreator>}
-     */
-    getCreatorById(id, options = {}) {
-      assertId(id);
-
-      return request(client, `/creators/${id}`, getApiKey(), options);
-    },
-  };
+  return request("/games", {
+    page,
+    page_size: pageSize,
+    ...filters,
+  });
 }
 
-const rawgApi = createRawgApi();
+/**
+ * @param {number} id
+ * @param {QueryFilters} [options]
+ * @returns {Promise<RawgGame>}
+ */
+export function getGameById(id, options = {}) {
+  assertId(id);
 
-export const getGames = rawgApi.getGames;
-export const getGameById = rawgApi.getGameById;
-export const getCreators = rawgApi.getCreators;
-export const getCreatorById = rawgApi.getCreatorById;
+  return request(`/games/${id}`, options);
+}
+
+/**
+ * @param {PaginationOptions & QueryFilters} [options]
+ * @returns {Promise<RawgListResponse<RawgCreator>>}
+ */
+export function getCreators(options = {}) {
+  const {
+    page = DEFAULT_PAGE,
+    pageSize = DEFAULT_PAGE_SIZE,
+    ...filters
+  } = options;
+
+  return request("/creators", {
+    page,
+    page_size: pageSize,
+    ...filters,
+  });
+}
+
+/**
+ * @param {number} id
+ * @param {QueryFilters} [options]
+ * @returns {Promise<RawgCreator>}
+ */
+export function getCreatorById(id, options = {}) {
+  assertId(id);
+
+  return request(`/creators/${id}`, options);
+}
+
+const rawgApi = {
+  getGames,
+  getGameById,
+  getCreators,
+  getCreatorById,
+};
 
 export default rawgApi;
