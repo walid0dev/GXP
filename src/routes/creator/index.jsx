@@ -98,7 +98,8 @@ if(error) return <p>{error}</p>
             <p className="text-xs text-gray-500">Role</p>
           </div>
         </div>
-      <Link to={`/creators/${creator.id}`}>
+      <Link to={`/creators/${creator.id}`}
+      state={{ creator }}>
         {/* Button */}
         <button className="mt-6 w-full bg-[#1e293b] hover:bg-[#334155] text-sm py-2 rounded-lg transition">
           View Profile

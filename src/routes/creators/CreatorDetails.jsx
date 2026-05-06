@@ -2,21 +2,43 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../../../services/apiCreators";
 
+import { useLocation } from "react-router-dom";
+
+
+
 function CreatorDetails() {
+  const location = useLocation();
+const creatorFromState = location.state?.creator; //location.state = données envoyées via <Link state={{ creator }} />
+const [creator, setCreator] = useState(creatorFromState || null);
   const { id } = useParams();
 
-  const [creator, setCreator] = useState(null);
+  // const [creator, setCreator] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCreator = async () => {
-      const res = await api.get(`/creators/${id}`);
-      setCreator(res.data);
-      setLoading(false);
-    };
+  // useEffect(() => {
+  //   const fetchCreator = async () => {
+  //     const res = await api.get(`/creators/${id}`);
+  //     setCreator(res.data);
+  //     setLoading(false);
+  //   };
 
-    fetchCreator();
-  }, [id]);
+  //   fetchCreator();
+  // }, [id]);
+
+  useEffect(() => {
+  if (creatorFromState) {
+    setLoading(false);
+    return; //  important → ne pas appeler l’API
+  }
+
+  const fetchCreator = async () => {
+    const res = await api.get(`/creators/${id}`);
+    setCreator(res.data);
+    setLoading(false);
+  };
+
+  fetchCreator();
+}, [id, creatorFromState]);
 
   if (loading) return <p className="text-white p-6">Loading...</p>;
 
@@ -121,10 +143,22 @@ function CreatorDetails() {
               <h3 className="uppercase text-sm text-gray-300 mb-2">
                 Associated Titles
               </h3>
-
-              <p className="text-gray-400 text-sm">
+                   {creator.games?.length > 0 ? (
+    <ul className="text-gray-400 text-sm list-disc ml-4 space-y-1">
+      {creator.games.map((game) => (
+        <li key={game.id}>
+          {game.name}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p className="text-gray-400 text-sm">
+      No associated titles available.
+    </p>
+  )}
+              {/* <p className="text-gray-400 text-sm">
                 This creator has contributed to various world-class productions in the industry.
-              </p>
+              </p> */}
             </div>
 
           </div>
