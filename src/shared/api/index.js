@@ -2,7 +2,7 @@ import axios from "axios";
 
 const DEFAULT_BASE_URL = "https://api.rawg.io/api";
 const DEFAULT_PAGE = 1;
-const DEFAULT_PAGE_SIZE = 20;
+const DEFAULT_PAGE_SIZE = 12;
 
 /**
  * @typedef {Object} PaginationOptions
@@ -81,6 +81,7 @@ function assertId(id) {
  * @param {Record<string, unknown>} [params]
  */
 async function request(path, params = {}) {
+  console.info("fetching data", path, params);
   const response = await client.get(path, {
     params: {
       key: apiKey,

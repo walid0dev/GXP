@@ -10,24 +10,44 @@ const genreLabels = [
   "Shooter",
 ];
 
-export const useGameExplorerStore = create((set, get) => ({
-  searchQuery: "",
-  genres: genreLabels.map((label) => ({ label, isActive: false })),
+export const useGameExplorerStore = create((set, get) => {
+  let debounceTimer;
+  return {
+    searchQuery: "",
+    prevPage: null,
+    nextPage: null,
+    setPaginationLinks: ({ prevPage = null, nextPage = null } = {}) =>
+      set({ prevPage, nextPage }),
+    debouncedQuery: "",
+    genres: genreLabels.map((label) => ({ label, isActive: false })),
 
-  setSearchQuery: (query = "") => {
-    return set((state) => ({ ...state, searchQuery: query }));
-  },
-  setGenres: (genre = "") => {
-    return set((state) => ({
-      ...state,
-      genres: state.genres.map((item) =>
-        item.label === genre ? { ...item, isActive: !item.isActive } : item
-      ),
-    }));
-  },
-  page: 1,
-  setPage: (page = 1) => {
-    if (page === get().page) return;
-    return set((state) => ({ ...state, page }));
-  },
-}));
+    setSearchQuery: (query = "") => {
+      set((state) => ({ ...state, searchQuery: query, page: 1 }));
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        set({ debouncedQuery: query });
+      }, 600);
+    },
+    setGenres: (genre = "") => {
+      console.log(
+        get()
+          .genres.filter((g) => g.isActive)
+          .map((g) => g.label)
+          .join(","),
+      );
+      return set((state) => ({
+        ...state,
+        page: 1,
+        genres: state.genres.map((item) =>
+          item.label === genre ? { ...item, isActive: !item.isActive } : item,
+        ),
+      }));
+    },
+
+    page: 1,
+    setPage: (page = 1) => {
+      if (page === get().page) return;
+      return set((state) => ({ ...state, page }));
+    },
+  };
+});
