@@ -39,7 +39,7 @@ const GameDetails = () => {
   }, [id]);
 
   if (loading) return <h1>Loading...</h1>;
-    // if (loading) return <PacmanLoader color="var(--primary)" size={44} />;
+  // if (loading) return <PacmanLoader color="var(--primary)" size={44} />;
 
   if (error) return <h1>{error}</h1>;
 
@@ -106,7 +106,7 @@ const GameDetails = () => {
           </h3>
 
           <NavLink
-            to="developers"
+            to="developpers"
             className="w-full bg-blue-600 hover:bg-blue-700 transition py-2 rounded-lg mb-6 text-center block"
           >
             View Developers ↗
