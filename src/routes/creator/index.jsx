@@ -1,20 +1,30 @@
 // const index = () => {
 //   return <div>Creator page</div>;
 // };
-
-// import api from "../services/apiCreators"
+// export default index;
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import api from "../../../services/apiCreators";
-// export default index;
+
 function Creators(){
 const [creators,setCreators]=useState([])
 const [loading,setLoading]=useState(true)
 const [error,setError]=useState("")
 const[page,setPage]=useState(1)
-const [total, setTotal] = useState(0);
+const [total, setTotal] = useState(0);   
 const totalPages = Math.ceil(total / 6);
+
+console.log(creators);
+console.log(totalPages);
+console.log(loading);
+console.log(error);
+console.log(page);
+console.log(total);
+
+
+
+
 
 useEffect(()=>{
 const fetchCreators=async()=>{
