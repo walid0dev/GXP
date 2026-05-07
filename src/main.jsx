@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")).render(
         <Route index element={<Home />} />
         <Route path="games" element={<Games />} />
         <Route path="games/:id" element={<GameDetails />} />
-        <Route path="team" element={<Team />} />
+        <Route path="games/:id/developpers" element={<Team />} />
         <Route path="creators" element={<Creators />} />
         <Route path="creators/:id" element={<CreatorDetails />} />
       </Route>
