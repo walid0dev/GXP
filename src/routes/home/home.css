@@ -64,7 +64,7 @@ body {
 }
 
 /* BUTTON GENERAL */
-button {
+.hero button {
   padding: 12px 25px;
   border-radius: 999px;
   border: none;
@@ -74,18 +74,19 @@ button {
 }
 
 /* PRIMARY */
-button {
+.hero button {
   background: #2563eb;
   color: white;
 }
 
 /* SECONDARY */
-button.secondary {
+.her button.secondary {
   background: #1e293b;
 }
 
 /* HOVER */
-button:hover {
+.hero button:hover {
   transform: translateY(-3px);
   opacity: 0.9;
 }
+

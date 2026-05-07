@@ -48,7 +48,7 @@ const DEFAULT_PAGE_SIZE = 12;
  */
 function getEnvApiKey() {
   if (typeof import.meta !== "undefined" && import.meta.env) {
-    return import.meta.env.RAWG_API_KEY || import.meta.env.VITE_API_KEY;
+    return import.meta.env.VITE_RAWG_API_KEY || import.meta.env.VITE_API_KEY;
   }
 
   return undefined;
