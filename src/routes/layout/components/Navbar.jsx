@@ -14,7 +14,7 @@ const navLinks = [
 const Navbar = () => {
   return (
     <nav className="flex items-center justify-between  px-4 py-4">
-      <NavLink to={"/"} className={"font-pixel text-6xl"}>
+      <NavLink to={"/"} className={"font-pixel text-6xl animate-pulse"}>
         GXP
       </NavLink>
       <div className="flex gap-2 text-xl">
