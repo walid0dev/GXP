@@ -1,10 +1,11 @@
 import axios from "axios";
 
-const api=axios.create({
-    baseURL:"https://api.rawg.io/api",
-    params:{
-        key:import.meta.env.VITE_API_KEY //le paramètre envoyé à l’API RAWG.
-    }
-})
+const api = axios.create({
+  baseURL: "https://api.rawg.io/api",
+  params: {
+    key: import.meta.env.VITE_RAWG_API_KEY, //le paramètre envoyé à l’API RAWG.
+  },
+});
 
 export default api;
+
