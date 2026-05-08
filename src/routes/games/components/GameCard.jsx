@@ -37,7 +37,7 @@ const GameCard = ({ game }) => {
 
   return (
     <NavLink
-      to={`${id}`}
+      to={`/games/${id}`}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/70 bg-card shadow-md transition-all duration-300 hover:border-primary/45 hover:shadow-xl"
       aria-label={`View ${name} details`}
     >

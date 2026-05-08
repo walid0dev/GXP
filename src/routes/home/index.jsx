@@ -1,4 +1,3 @@
-
 // import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 //  import "./home.css";
@@ -86,37 +85,33 @@ import { div } from "motion/react-client";
 //     </div>
 //   );
 // }
-import "./home.css"; 
+import "./home.css";
 import { useNavigate } from "react-router-dom";
-function Home(){
-  const navigate=useNavigate()
-  return(
+import TrendingGame from "../games/components/TrendingGames.jsx";
+function Home() {
+  const navigate = useNavigate();
+  return (
     <div>
-        {/* HERO */}
+      {/* HERO */}
       <section className="hero">
         <h1>
           Discover Your Next <span className="adv">Adventure</span>
         </h1>
         <p>
-          Explore a vast universe of gaming possibilities. From indie gems to AAA
-          masterpieces.
+          Explore a vast universe of gaming possibilities. From indie gems to
+          AAA masterpieces.
         </p>
 
         <div className="buttons">
-          <button onClick={() => navigate("/games")}>
-            Browse Games
-          </button>
+          <button onClick={() => navigate("/games")}>Browse Games</button>
 
-          <button
-            className="secondary"
-            onClick={() => navigate("/creators")}
-          >
+          <button className="secondary" onClick={() => navigate("/creators")}>
             Explore Creators
           </button>
         </div>
       </section>
-      
+      <TrendingGame />
     </div>
-  )
+  );
 }
 export default Home;
