@@ -44,6 +44,16 @@ const DEFAULT_PAGE_SIZE = 12;
  */
 
 /**
+ * @typedef {Object} RawgDeveloper
+ * @property {number} id
+ * @property {string} name
+ * @property {string} slug
+ * @property {string} [image]
+ * @property {string} [image_background]
+ * @property {number} games_count
+ */
+
+/**
  * @returns {string | undefined}
  */
 function getEnvApiKey() {
@@ -125,6 +135,27 @@ export function getGameById(id, options = {}) {
 }
 
 /**
+ * @param {number} id
+ * @param {PaginationOptions & QueryFilters} [options]
+ * @returns {Promise<RawgListResponse<RawgDeveloper>>}
+ */
+export function getGameDevelopmentTeam(id, options = {}) {
+  assertId(id);
+
+  const {
+    page = DEFAULT_PAGE,
+    pageSize = DEFAULT_PAGE_SIZE,
+    ...filters
+  } = options;
+
+  return request(`/games/${id}/development-team`, {
+    page,
+    page_size: pageSize,
+    ...filters,
+  });
+}
+
+/**
  * @param {PaginationOptions & QueryFilters} [options]
  * @returns {Promise<RawgListResponse<RawgCreator>>}
  */
@@ -156,6 +187,7 @@ export function getCreatorById(id, options = {}) {
 const rawgApi = {
   getGames,
   getGameById,
+  getGameDevelopmentTeam,
   getCreators,
   getCreatorById,
 };
